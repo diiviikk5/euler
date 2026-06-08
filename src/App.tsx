@@ -1,10 +1,25 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, Calendar, Clock, BookOpen, Star, Sparkles } from 'lucide-react';
 import { WordsPullUp, WordsPullUpMultiStyle, ScrollRevealParagraph } from './components/AnimationComponents';
 
+// Import custom generated image assets
+import interstellarImg from './assets/media/interstellar.png';
+import bladerunnerImg from './assets/media/bladerunner.png';
+import eldenringImg from './assets/media/eldenring.png';
+import witcherImg from './assets/media/witcher.png';
+
 function App() {
+  const writingsSectionRef = useRef<HTMLDivElement>(null);
+  const thoughtsSectionRef = useRef<HTMLDivElement>(null);
+  const moviesSectionRef = useRef<HTMLDivElement>(null);
+  const gamesSectionRef = useRef<HTMLDivElement>(null);
   const featuresSectionRef = useRef<HTMLDivElement>(null);
+
+  const isWritingsInView = useInView(writingsSectionRef, { once: true, margin: '-100px' });
+  const isThoughtsInView = useInView(thoughtsSectionRef, { once: true, margin: '-100px' });
+  const isMoviesInView = useInView(moviesSectionRef, { once: true, margin: '-100px' });
+  const isGamesInView = useInView(gamesSectionRef, { once: true, margin: '-100px' });
   const isFeaturesInView = useInView(featuresSectionRef, { once: true, margin: '-100px' });
 
   // Navigation click helper
@@ -15,18 +30,30 @@ function App() {
     }
   };
 
-  // Grid container variants for staggered card entrance
-  const gridVariants = {
+  // Stagger variants
+  const listVariants = {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.15,
+        staggerChildren: 0.1,
       },
     },
   };
 
-  // Individual card variants (scale from 0.95 + fade in, ease [0.22, 1, 0.36, 1])
+  // Card animation variants
   const cardVariants = {
+    hidden: { y: 30, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
+      },
+    },
+  };
+
+  const mediaCardVariants = {
     hidden: { scale: 0.95, opacity: 0 },
     visible: {
       scale: 1,
@@ -69,10 +96,10 @@ function App() {
           <nav className="absolute top-0 left-1/2 -translate-x-1/2 bg-black rounded-b-2xl md:rounded-b-3xl px-4 py-2.5 md:px-8 py-3 z-50 flex items-center justify-center border-x border-b border-white/5">
             <ul className="flex items-center gap-3 sm:gap-6 md:gap-12 lg:gap-14">
               {[
-                { name: 'Essays', id: 'features' },
-                { name: 'Shorts', id: 'features' },
-                { name: 'Thoughts', id: 'features' },
-                { name: 'Archive', id: 'features' },
+                { name: 'Writings', id: 'writings' },
+                { name: 'Thoughts', id: 'thoughts' },
+                { name: 'Movies', id: 'movies' },
+                { name: 'Games', id: 'games' },
                 { name: 'About', id: 'about' }
               ].map((item, idx) => (
                 <li key={idx}>
@@ -116,7 +143,7 @@ function App() {
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.7, duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-                  onClick={() => scrollToSection('about')}
+                  onClick={() => scrollToSection('writings')}
                   className="flex items-center gap-2 bg-[#DEDBC8] hover:gap-3 text-black font-medium text-xs sm:text-sm md:text-base rounded-full pl-5 pr-2 py-2 transition-all duration-300 group shadow-lg shadow-black/20"
                 >
                   <span>Enter the archive</span>
@@ -133,14 +160,14 @@ function App() {
       </section>
 
       {/* SECTION 2: ABOUT */}
-      <section id="about" className="py-20 md:py-32 px-4 md:px-6 bg-black flex justify-center border-y border-white/5">
+      <section id="about" className="py-20 md:py-32 px-4 md:px-6 bg-black flex justify-center border-b border-white/5">
         <div className="bg-[#101010] rounded-[2rem] p-8 md:p-20 text-center max-w-6xl w-full border border-white/5 relative overflow-hidden">
           {/* Subtle noise background on the card */}
           <div className="bg-noise absolute inset-0 opacity-[0.05] pointer-events-none" />
 
           {/* Small Label */}
           <span className="text-[#DEDBC8] text-[10px] sm:text-xs tracking-[0.2em] uppercase mb-8 block font-medium">
-            Selected Writing
+            The Author
           </span>
 
           {/* Heading */}
@@ -161,7 +188,327 @@ function App() {
         </div>
       </section>
 
-      {/* SECTION 3: FEATURES */}
+      {/* SECTION 3: WRITINGS */}
+      <section id="writings" className="py-20 md:py-32 px-4 md:px-6 bg-black border-b border-white/5 flex flex-col items-center">
+        <div className="w-full max-w-7xl">
+          
+          <div className="mb-12 md:mb-16">
+            <span className="text-[#DEDBC8] text-[10px] sm:text-xs tracking-[0.2em] uppercase block font-medium mb-3">
+              Long-Form Papers
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#E1E0CC]">
+              Writings.
+            </h2>
+          </div>
+
+          <motion.div
+            ref={writingsSectionRef}
+            variants={listVariants}
+            initial="hidden"
+            animate={isWritingsInView ? 'visible' : 'hidden'}
+            className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full"
+          >
+            {[
+              {
+                date: 'Oct 2025',
+                category: 'Tech & Philosophy',
+                readTime: '6 min read',
+                title: 'The Ghost in the Machine: AI and the Search for Meaning',
+                description: 'An inquiry into the nature of consciousness, large language models, and what it means to be a creator in the age of automation.'
+              },
+              {
+                date: 'Dec 2025',
+                category: 'Design & Society',
+                readTime: '4 min read',
+                title: 'Designing for Rest: The Aesthetics of Minimalist Interfaces',
+                description: 'How screen saturation dictates our attention span, and the critical role digital quietness plays in modern user experiences.'
+              },
+              {
+                date: 'Feb 2026',
+                category: 'Literature & Film',
+                readTime: '8 min read',
+                title: 'Staring into the Abyss: Cosmic Pessimism in Modern Sci-Fi',
+                description: 'An analysis of existential dread, space exploration narratives, and how science fiction reflects our deepest psychological fears.'
+              }
+            ].map((essay, idx) => (
+              <motion.article
+                key={idx}
+                variants={cardVariants}
+                className="bg-[#101010] border border-white/5 rounded-2xl p-6 md:p-8 flex flex-col justify-between hover:border-[#DEDBC8]/20 hover:shadow-2xl hover:shadow-black/40 transition-all duration-300 group"
+              >
+                <div>
+                  <div className="flex items-center gap-4 text-[10px] sm:text-xs text-[#DEDBC8]/60 mb-6 font-mono">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5" />
+                      {essay.date}
+                    </span>
+                    <span>•</span>
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5" />
+                      {essay.readTime}
+                    </span>
+                  </div>
+
+                  <span className="text-xs font-semibold text-[#DEDBC8] uppercase tracking-wider block mb-3">
+                    {essay.category}
+                  </span>
+
+                  <h3 className="text-xl sm:text-2xl font-normal text-[#E1E0CC] leading-tight mb-4 group-hover:text-[#DEDBC8] transition-colors duration-200">
+                    {essay.title}
+                  </h3>
+
+                  <p className="text-gray-400 text-xs sm:text-sm leading-relaxed mb-6 font-light">
+                    {essay.description}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-1 text-[#DEDBC8] text-xs sm:text-sm font-medium hover:underline cursor-pointer group-hover:gap-2 transition-all duration-200 w-fit pt-4">
+                  <BookOpen className="w-4 h-4 shrink-0" />
+                  <span>Read article</span>
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300" />
+                </div>
+              </motion.article>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 4: THOUGHTS */}
+      <section id="thoughts" className="py-20 md:py-32 px-4 md:px-6 bg-black border-b border-white/5 flex flex-col items-center relative">
+        <div className="bg-noise absolute inset-0 opacity-[0.05] pointer-events-none" />
+        
+        <div className="w-full max-w-4xl relative z-10">
+          
+          <div className="mb-12 md:mb-16 text-center">
+            <span className="text-[#DEDBC8] text-[10px] sm:text-xs tracking-[0.2em] uppercase block font-medium mb-3">
+              Stream of Consciousness
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#E1E0CC]">
+              Thoughts.
+            </h2>
+          </div>
+
+          <motion.div
+            ref={thoughtsSectionRef}
+            variants={listVariants}
+            initial="hidden"
+            animate={isThoughtsInView ? 'visible' : 'hidden'}
+            className="flex flex-col gap-8 w-full border-l border-white/10 pl-6 md:pl-8 ml-2 md:ml-4"
+          >
+            {[
+              {
+                date: 'June 08, 2026',
+                content: 'Late night refactoring is a trap. Sleep is the best debugger. Wrote 3 lines of code in 5 minutes today that fixed a bug I spent 4 hours on last night. Let the unconscious mind run in the background.'
+              },
+              {
+                date: 'May 22, 2026',
+                content: "Just finished reading Hofstadter's 'Gödel, Escher, Bach'. The recursive loops of consciousness are mesmerizing. High recommend to anyone interested in cognitive science, mathematics, or code structure."
+              },
+              {
+                date: 'May 05, 2026',
+                content: 'Simplicity is not the absence of clutter, but the presence of clarity. This applies to writing, interface design, code architecture, and life alike. Reduce to the essential, discard the secondary.'
+              }
+            ].map((thought, idx) => (
+              <motion.div
+                key={idx}
+                variants={cardVariants}
+                className="relative group"
+              >
+                {/* Timeline Dot Indicator */}
+                <div className="absolute -left-[31px] md:-left-[41px] top-1.5 bg-[#DEDBC8] rounded-full w-2.5 h-2.5 md:w-3.5 md:h-3.5 border-4 border-black group-hover:scale-125 group-hover:bg-[#E1E0CC] transition-all duration-300" />
+
+                <span className="text-[10px] sm:text-xs text-[#DEDBC8]/50 font-mono block mb-2">
+                  {thought.date}
+                </span>
+
+                <div className="bg-[#101010] border border-white/5 rounded-2xl p-6 hover:border-[#DEDBC8]/10 transition-all duration-300">
+                  <p className="text-[#E1E0CC] text-xs sm:text-sm md:text-base leading-relaxed font-light font-sans whitespace-pre-line italic">
+                    "{thought.content}"
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 5: FAVORITE MOVIES */}
+      <section id="movies" className="py-20 md:py-32 px-4 md:px-6 bg-black border-b border-white/5 flex flex-col items-center">
+        <div className="w-full max-w-7xl">
+          
+          <div className="mb-12 md:mb-16">
+            <span className="text-[#DEDBC8] text-[10px] sm:text-xs tracking-[0.2em] uppercase block font-medium mb-3">
+              Cinematic Masterpieces
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#E1E0CC]">
+              Favorite Movies.
+            </h2>
+          </div>
+
+          <motion.div
+            ref={moviesSectionRef}
+            variants={listVariants}
+            initial="hidden"
+            animate={isMoviesInView ? 'visible' : 'hidden'}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full"
+          >
+            {[
+              {
+                title: 'Interstellar',
+                year: '2014',
+                genre: 'Sci-Fi / Drama',
+                rating: '9.8/10',
+                image: interstellarImg,
+                comment: "A breathtaking masterpiece that marries physics and poetry. Hans Zimmer's organ-heavy score creates an unparalleled sense of cosmic scale and emotional intimacy."
+              },
+              {
+                title: 'Blade Runner 2049',
+                year: '2017',
+                genre: 'Cyberpunk / Neo-Noir',
+                rating: '9.6/10',
+                image: bladerunnerImg,
+                comment: "Denis Villeneuve's visual design is a masterclass in scale and atmosphere. Every frame is a perfect painting exploring memory, humanity, and artificial souls."
+              }
+            ].map((movie, idx) => (
+              <motion.div
+                key={idx}
+                variants={mediaCardVariants}
+                className="bg-[#101010] border border-white/5 rounded-[2rem] overflow-hidden flex flex-col md:flex-row h-auto md:h-[320px] hover:border-[#DEDBC8]/20 transition-all duration-300 group"
+              >
+                {/* Poster Cover */}
+                <div className="w-full md:w-[220px] h-[240px] md:h-full overflow-hidden shrink-0 relative">
+                  <img
+                    src={movie.image}
+                    alt={movie.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#101010] via-transparent to-transparent md:hidden" />
+                </div>
+
+                {/* Details */}
+                <div className="p-6 md:p-8 flex flex-col justify-between flex-grow">
+                  <div>
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-normal text-[#E1E0CC] mb-1">
+                          {movie.title}
+                        </h3>
+                        <span className="text-[#DEDBC8]/60 text-xs font-mono">
+                          {movie.year} • {movie.genre}
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-1 bg-[#DEDBC8]/10 text-[#DEDBC8] px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold">
+                        <Star className="w-3 h-3 fill-current" />
+                        <span>{movie.rating}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-gray-400 text-xs sm:text-sm font-light leading-relaxed mb-4">
+                      {movie.comment}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-xs text-[#DEDBC8]/80 font-mono mt-2 select-none">
+                    <Sparkles className="w-3.5 h-3.5 text-[#DEDBC8]" />
+                    <span>Highly Recommended</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 6: FAVORITE GAMES */}
+      <section id="games" className="py-20 md:py-32 px-4 md:px-6 bg-black border-b border-white/5 flex flex-col items-center">
+        <div className="w-full max-w-7xl">
+          
+          <div className="mb-12 md:mb-16">
+            <span className="text-[#DEDBC8] text-[10px] sm:text-xs tracking-[0.2em] uppercase block font-medium mb-3">
+              Interactive Worlds
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-[#E1E0CC]">
+              Favorite Games.
+            </h2>
+          </div>
+
+          <motion.div
+            ref={gamesSectionRef}
+            variants={listVariants}
+            initial="hidden"
+            animate={isGamesInView ? 'visible' : 'hidden'}
+            className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full"
+          >
+            {[
+              {
+                title: 'Elden Ring',
+                developer: 'FromSoftware',
+                year: '2022',
+                rating: '9.9/10',
+                image: eldenringImg,
+                comment: "An absolute triumph in world design and player freedom. The Lands Between feel mysterious, dangerous, and incredibly rewarding to explore on foot."
+              },
+              {
+                title: 'The Witcher 3: Wild Hunt',
+                developer: 'CD Projekt Red',
+                year: '2015',
+                rating: '9.7/10',
+                image: witcherImg,
+                comment: "The gold standard for narrative role-playing. Every side quest has the emotional weight of a main storyline, set in a beautifully realized grim fantasy world."
+              }
+            ].map((game, idx) => (
+              <motion.div
+                key={idx}
+                variants={mediaCardVariants}
+                className="bg-[#101010] border border-white/5 rounded-[2rem] overflow-hidden flex flex-col md:flex-row h-auto md:h-[320px] hover:border-[#DEDBC8]/20 transition-all duration-300 group"
+              >
+                {/* Cover Art */}
+                <div className="w-full md:w-[220px] h-[240px] md:h-full overflow-hidden shrink-0 relative">
+                  <img
+                    src={game.image}
+                    alt={game.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#101010] via-transparent to-transparent md:hidden" />
+                </div>
+
+                {/* Details */}
+                <div className="p-6 md:p-8 flex flex-col justify-between flex-grow">
+                  <div>
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-normal text-[#E1E0CC] mb-1">
+                          {game.title}
+                        </h3>
+                        <span className="text-[#DEDBC8]/60 text-xs font-mono">
+                          {game.developer} • {game.year}
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-1 bg-[#DEDBC8]/10 text-[#DEDBC8] px-2.5 py-1 rounded-full text-[10px] font-mono font-semibold">
+                        <Star className="w-3 h-3 fill-current" />
+                        <span>{game.rating}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-gray-400 text-xs sm:text-sm font-light leading-relaxed mb-4">
+                      {game.comment}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-xs text-[#DEDBC8]/80 font-mono mt-2 select-none">
+                    <Sparkles className="w-3.5 h-3.5 text-[#DEDBC8]" />
+                    <span>Highly Recommended</span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* SECTION 7: FEATURES */}
       <section id="features" className="min-h-screen bg-black py-20 md:py-32 px-4 md:px-6 relative flex flex-col justify-center items-center">
         
         {/* Subtle Background Noise */}
@@ -183,7 +530,7 @@ function App() {
           {/* 4-column card grid */}
           <motion.div
             ref={featuresSectionRef}
-            variants={gridVariants}
+            variants={listVariants}
             initial="hidden"
             animate={isFeaturesInView ? 'visible' : 'hidden'}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:h-[480px] w-full"
@@ -191,7 +538,7 @@ function App() {
 
             {/* Card 1 - Video Card */}
             <motion.div
-              variants={cardVariants}
+              variants={mediaCardVariants}
               className="relative rounded-2xl overflow-hidden h-[300px] lg:h-full flex flex-col justify-end p-6 md:p-8 bg-[#212121] border border-white/5 group"
             >
               <video
@@ -214,7 +561,7 @@ function App() {
 
             {/* Card 2 - Deep Essays */}
             <motion.div
-              variants={cardVariants}
+              variants={mediaCardVariants}
               className="rounded-2xl p-6 md:p-8 bg-[#212121] border border-white/5 flex flex-col justify-between h-[380px] lg:h-full group hover:border-[#DEDBC8]/30 transition-all duration-300"
             >
               <div>
@@ -256,7 +603,7 @@ function App() {
 
             {/* Card 3 - Short Thoughts */}
             <motion.div
-              variants={cardVariants}
+              variants={mediaCardVariants}
               className="rounded-2xl p-6 md:p-8 bg-[#212121] border border-white/5 flex flex-col justify-between h-[380px] lg:h-full group hover:border-[#DEDBC8]/30 transition-all duration-300"
             >
               <div>
@@ -297,7 +644,7 @@ function App() {
 
             {/* Card 4 - Creative Writing */}
             <motion.div
-              variants={cardVariants}
+              variants={mediaCardVariants}
               className="rounded-2xl p-6 md:p-8 bg-[#212121] border border-white/5 flex flex-col justify-between h-[380px] lg:h-full group hover:border-[#DEDBC8]/30 transition-all duration-300"
             >
               <div>
