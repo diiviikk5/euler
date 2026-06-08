@@ -30,7 +30,7 @@ export const WordsPullUp = ({ text, className = '', showAsterisk = false }: Word
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
       },
     },
   };
@@ -119,7 +119,7 @@ export const WordsPullUpMultiStyle = ({ segments, className = '' }: WordsPullUpM
       opacity: 1,
       transition: {
         duration: 0.6,
-        ease: [0.16, 1, 0.3, 1],
+        ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
       },
     },
   };

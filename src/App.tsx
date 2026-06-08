@@ -33,7 +33,7 @@ function App() {
       opacity: 1,
       transition: {
         duration: 0.8,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
       },
     },
   };
@@ -106,7 +106,7 @@ function App() {
                 <motion.p
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ delay: 0.5, duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                   className="text-[#DEDBC8]/70 text-xs sm:text-sm md:text-base leading-[1.2] font-light tracking-wide text-left"
                 >
                   Euler is a personal sanctuary for deep thoughts, essays, and creative writing—an intellectual repository bound not by conventions, but by curiosity and a hunger to explore ideas through unique perspectives.
@@ -115,7 +115,7 @@ function App() {
                 <motion.button
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.7, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ delay: 0.7, duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                   onClick={() => scrollToSection('about')}
                   className="flex items-center gap-2 bg-[#DEDBC8] hover:gap-3 text-black font-medium text-xs sm:text-sm md:text-base rounded-full pl-5 pr-2 py-2 transition-all duration-300 group shadow-lg shadow-black/20"
                 >
