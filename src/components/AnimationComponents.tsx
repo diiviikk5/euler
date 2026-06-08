@@ -6,9 +6,10 @@ interface WordsPullUpProps {
   text: string;
   className?: string;
   showAsterisk?: boolean;
+  onAsteriskClick?: () => void;
 }
 
-export const WordsPullUp = ({ text, className = '', showAsterisk = false }: WordsPullUpProps) => {
+export const WordsPullUp = ({ text, className = '', showAsterisk = false, onAsteriskClick }: WordsPullUpProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-50px' });
 
@@ -54,7 +55,10 @@ export const WordsPullUp = ({ text, className = '', showAsterisk = false }: Word
               className="relative inline-block mr-[0.2em] last:mr-0"
             >
               {word}
-              <span className="absolute top-[0.65em] -right-[0.35em] text-[0.31em] select-none font-sans font-light">
+              <span 
+                onClick={onAsteriskClick}
+                className="absolute top-[0.65em] -right-[0.35em] text-[0.31em] select-none font-sans font-light cursor-pointer hover:text-[#DEDBC8] transition-colors duration-200"
+              >
                 *
               </span>
             </motion.span>
